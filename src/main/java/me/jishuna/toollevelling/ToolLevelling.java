@@ -7,20 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-
 import me.jishuna.commonlib.FileUtils;
 import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.api.experience.ExperienceManager;
 import me.jishuna.toollevelling.api.inventory.CustomInventoryManager;
 import me.jishuna.toollevelling.api.tools.ToolTypeManager;
 import me.jishuna.toollevelling.api.upgrades.UpgradeManager;
+import me.jishuna.toollevelling.api.utils.ItemUpdater;
 import me.jishuna.toollevelling.listeners.BlockListeners;
 import me.jishuna.toollevelling.listeners.ExperienceListener;
 import me.jishuna.toollevelling.listeners.ItemMenuListener;
-import me.jishuna.toollevelling.packets.PacketAdapterSetSlot;
 
 public class ToolLevelling extends JavaPlugin {
 
@@ -36,12 +32,12 @@ public class ToolLevelling extends JavaPlugin {
 
 	private CustomInventoryManager inventoryManager;
 
-	private final PacketAdapterSetSlot slotPacketListener = new PacketAdapterSetSlot(this, ListenerPriority.NORMAL);
-
 	@Override
 	public void onEnable() {
 		loadConfiguration();
 		PluginKeys.initialize(this);
+		
+		ItemUpdater.cacheLore(this.messageConfig);
 
 		this.upgradeManager = new UpgradeManager(this);
 		this.upgradeManager.reloadUpgrades();
@@ -54,14 +50,11 @@ public class ToolLevelling extends JavaPlugin {
 
 		this.inventoryManager = new CustomInventoryManager(this);
 
-		Bukkit.getPluginManager().registerEvents(new ExperienceListener(this.experienceManager), this);
+		Bukkit.getPluginManager().registerEvents(new ExperienceListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new ItemMenuListener(this), this);
 		Bukkit.getPluginManager().registerEvents(inventoryManager, this);
 
 		Bukkit.getPluginManager().registerEvents(new BlockListeners(this.upgradeManager), this);
-
-		registerPacketListeners();
-		this.slotPacketListener.cacheLore(this.messageConfig);
 	}
 
 	@Override
@@ -116,12 +109,6 @@ public class ToolLevelling extends JavaPlugin {
 
 		Optional<File> upgradeOptional = FileUtils.copyResource(this, "upgrades.yml");
 		upgradeOptional.ifPresent(file -> this.upgradeConfig = YamlConfiguration.loadConfiguration(file));
-	}
-
-	private void registerPacketListeners() {
-		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-
-		manager.addPacketListener(this.slotPacketListener);
 	}
 
 }

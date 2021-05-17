@@ -8,14 +8,15 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.jishuna.toollevelling.api.experience.ExperienceManager;
+import me.jishuna.toollevelling.ToolLevelling;
+import me.jishuna.toollevelling.api.utils.ItemUpdater;
 
 public class ExperienceListener implements Listener {
 
-	private final ExperienceManager experienceManager;
+	private final ToolLevelling plugin;
 
-	public ExperienceListener(ExperienceManager experienceManager) {
-		this.experienceManager = experienceManager;
+	public ExperienceListener(ToolLevelling plugin) {
+		this.plugin = plugin;
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -29,8 +30,10 @@ public class ExperienceListener implements Listener {
 		Player player = event.getEntity().getKiller();
 		ItemStack item = player.getEquipment().getItemInMainHand();
 
-		if (item != null && !item.getType().isAir())
-			this.experienceManager.increaseExperience(item, event.getEntityType());
+		if (item != null && !item.getType().isAir()) {
+			this.plugin.getExperienceManager().increaseExperience(item, event.getEntityType());
+			ItemUpdater.updateItem(this.plugin, item, false);
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -38,8 +41,10 @@ public class ExperienceListener implements Listener {
 		Player player = event.getPlayer();
 		ItemStack item = player.getEquipment().getItemInMainHand();
 
-		if (item != null && !item.getType().isAir())
-			this.experienceManager.increaseExperience(item, event.getBlock().getType());
+		if (item != null && !item.getType().isAir()) {
+			this.plugin.getExperienceManager().increaseExperience(item, event.getBlock().getType());
+			ItemUpdater.updateItem(this.plugin, item, false);
+		}
 	}
 
 }

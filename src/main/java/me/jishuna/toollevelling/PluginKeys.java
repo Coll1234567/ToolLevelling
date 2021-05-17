@@ -4,7 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 
 public enum PluginKeys {
-	LEVEL("level"), EXPERIENCE("experience"), NEXT_LEVEL("next_level"), POINTS("upgrade_points"), UPGRADE_COMPOUND("upgrades");
+	LEVEL("level"), EXPERIENCE("experience"), NEXT_LEVEL("next_level"), POINTS("upgrade_points"), UPGRADE_COMPOUND("upgrades"), LORE_CACHE("lore_cache"), UUID("item_id");
 
 	private final String name;
 	private NamespacedKey key;

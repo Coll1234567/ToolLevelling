@@ -13,6 +13,7 @@ import me.jishuna.commonlib.ItemBuilder;
 import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
+import me.jishuna.toollevelling.api.utils.ItemUpdater;
 import net.md_5.bungee.api.ChatColor;
 
 public class ToolInventory extends CustomInventory {
@@ -111,6 +112,8 @@ public class ToolInventory extends CustomInventory {
 		container.set(PluginKeys.POINTS.getKey(), PersistentDataType.INTEGER, this.points);
 
 		this.item.setItemMeta(meta);
+
+		ItemUpdater.updateItem(this.plugin, item, true);
 	}
 
 }

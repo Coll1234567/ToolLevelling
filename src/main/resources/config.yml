@@ -1,3 +1,5 @@
+cache-time-seconds: 10
+
 tool-types:
   SWORD:
     - 'WOODEN_SWORD'
