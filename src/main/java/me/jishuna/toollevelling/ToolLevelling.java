@@ -12,10 +12,12 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 
 import me.jishuna.commonlib.FileUtils;
+import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.api.experience.ExperienceManager;
 import me.jishuna.toollevelling.api.inventory.CustomInventoryManager;
 import me.jishuna.toollevelling.api.tools.ToolTypeManager;
 import me.jishuna.toollevelling.api.upgrades.UpgradeManager;
+import me.jishuna.toollevelling.listeners.BlockListeners;
 import me.jishuna.toollevelling.listeners.ExperienceListener;
 import me.jishuna.toollevelling.listeners.ItemMenuListener;
 import me.jishuna.toollevelling.packets.PacketAdapterSetSlot;
@@ -24,8 +26,9 @@ public class ToolLevelling extends JavaPlugin {
 
 	private YamlConfiguration config;
 	private YamlConfiguration experienceConfig;
-	private YamlConfiguration messageConfig;
 	private YamlConfiguration upgradeConfig;
+
+	private MessageConfig messageConfig;
 
 	private UpgradeManager upgradeManager;
 	private ToolTypeManager toolTypeManager;
@@ -48,12 +51,14 @@ public class ToolLevelling extends JavaPlugin {
 
 		this.experienceManager = new ExperienceManager(this.toolTypeManager);
 		this.experienceManager.reload(this.experienceConfig);
-		
+
 		this.inventoryManager = new CustomInventoryManager(this);
 
 		Bukkit.getPluginManager().registerEvents(new ExperienceListener(this.experienceManager), this);
 		Bukkit.getPluginManager().registerEvents(new ItemMenuListener(this), this);
 		Bukkit.getPluginManager().registerEvents(inventoryManager, this);
+
+		Bukkit.getPluginManager().registerEvents(new BlockListeners(this.upgradeManager), this);
 
 		registerPacketListeners();
 		this.slotPacketListener.cacheLore(this.messageConfig);
@@ -71,7 +76,7 @@ public class ToolLevelling extends JavaPlugin {
 		return experienceConfig;
 	}
 
-	public YamlConfiguration getMessageConfig() {
+	public MessageConfig getMessageConfig() {
 		return messageConfig;
 	}
 
@@ -106,7 +111,8 @@ public class ToolLevelling extends JavaPlugin {
 		experienceOptional.ifPresent(file -> this.experienceConfig = YamlConfiguration.loadConfiguration(file));
 
 		Optional<File> messageOptional = FileUtils.copyResource(this, "messages.yml");
-		messageOptional.ifPresent(file -> this.messageConfig = YamlConfiguration.loadConfiguration(file));
+		messageOptional
+				.ifPresent(file -> this.messageConfig = new MessageConfig(YamlConfiguration.loadConfiguration(file)));
 
 		Optional<File> upgradeOptional = FileUtils.copyResource(this, "upgrades.yml");
 		upgradeOptional.ifPresent(file -> this.upgradeConfig = YamlConfiguration.loadConfiguration(file));

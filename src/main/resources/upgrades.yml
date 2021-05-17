@@ -1,7 +1,20 @@
+#Custom
+scavenger:
+  enabled: true
+  name: '&7Scavenger'
+  description: '&3Each level gives you a %chance-per-level%% chance to find iron or gold nuggets when mining stone.'
+  max-level: 5
+  weight: 50
+  chance-per-level: 2
+  tool-types:
+  - 'PICKAXE'
+  - 'SHOVEL'
+  
+#Enchantments
 bane_of_arthropods:
   enabled: true
   name: '&7Bane of Arthropods'
-  description: none
+  description: '&3Each level increases damage dealt to spiders, cave spiders, and silverfish.'
   max-level: 7
   weight: 100
   tool-types:
@@ -33,7 +46,7 @@ depth_strider:
 efficiency:
   enabled: true
   name: '&7Efficiency'
-  description: none
+  description: '&3Increases tool mining speed.'
   max-level: 7
   weight: 100
   tool-types:
@@ -53,7 +66,7 @@ feather_falling:
 fire_aspect:
   enabled: true
   name: '&7Fire Aspect'
-  description: none
+  description: '&3Sets targets on fire, duration increases with level.'
   max-level: 4
   weight: 100
   tool-types:
@@ -82,7 +95,7 @@ flame:
 fortune:
   enabled: true
   name: '&7Fortune'
-  description: none
+  description: '&3Increases the amount of items dropped from various blocks, such as ore.'
   max-level: 4
   weight: 70
   tool-types:
@@ -122,7 +135,7 @@ infinity:
 knockback:
   enabled: true
   name: '&7Knockback'
-  description: none
+  description: '&3Knocks targets backwards, higher levels have a stronger effect.'
   max-level: 3
   weight: 100
   tool-types:
@@ -131,7 +144,7 @@ knockback:
 looting:
   enabled: true
   name: '&7Looting'
-  description: none
+  description: '&3Each level increases the drops from slain mobs.'
   max-level: 4
   weight: 50
   tool-types:
@@ -260,7 +273,7 @@ riptide:
 sharpness:
   enabled: true
   name: '&7Sharpness'
-  description: none
+  description: '&3Each level increases damage dealt to all targets.'
   max-level: 7
   weight: 80
   tool-types:
@@ -272,7 +285,7 @@ sharpness:
 smite:
   enabled: true
   name: '&7Smite'
-  description: none
+  description: '&3Each level increases damage dealt to undead mobs.'
   max-level: 7
   weight: 100
   tool-types:
@@ -294,7 +307,7 @@ soul_speed:
 sweeping:
   enabled: true
   name: '&7Sweeping Edge'
-  description: none
+  description: '&3Each level increases the damage of your sweep attack.'
   max-level: 5
   weight: 50
   tool-types:
@@ -313,7 +326,7 @@ thorns:
 unbreaking:
   enabled: true
   name: '&7Unbreaking'
-  description: none
+  description: '&3Reduces the chance of the item losing durability when used.'
   max-level: 5
   weight: 80
   tool-types:

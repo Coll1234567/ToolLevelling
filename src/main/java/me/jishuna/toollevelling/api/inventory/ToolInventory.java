@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import me.jishuna.commonlib.CustomInventory;
 import me.jishuna.commonlib.ItemBuilder;
+import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
 import net.md_5.bungee.api.ChatColor;
@@ -62,8 +63,9 @@ public class ToolInventory extends CustomInventory {
 		setItem(13, this.item.clone());
 
 		if (this.points > 0) {
-			addButton(15, new ItemBuilder(Material.PAPER).withName(ChatColor.GOLD + "Purchase Upgrades").build(),
-					this::showUpgradeMenu);
+			MessageConfig config = this.plugin.getMessageConfig();
+			addButton(15, new ItemBuilder(Material.PAPER).withName(config.getString("upgrade-item.name"))
+					.withLore(config.getStringList("upgrade-item.lore")).build(), this::showUpgradeMenu);
 		} else {
 			removeButton(15);
 			setItem(15, this.filler);

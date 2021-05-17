@@ -8,15 +8,20 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import me.jishuna.commonlib.WeightedRandom;
+import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
 import me.jishuna.toollevelling.api.event.UpgradeSetupEvent;
 import me.jishuna.toollevelling.api.tools.ToolType;
 import me.jishuna.toollevelling.upgrades.EnchantmentUpgrade;
+import me.jishuna.toollevelling.upgrades.ScavengerUpgrade;
 
 public class UpgradeManager {
 	private final ToolLevelling plugin;
@@ -59,11 +64,32 @@ public class UpgradeManager {
 			}
 		}
 
+		defaultUpgrades.add(new ScavengerUpgrade(this.plugin, upgradeConfig));
+
 		return defaultUpgrades;
 	}
 
 	public Optional<Upgrade> getUpgrade(String key) {
 		return Optional.ofNullable(this.upgrades.get(key));
+	}
+
+	public Map<CustomUpgrade, Integer> getCustomUpgrades(ItemStack item) {
+		Map<CustomUpgrade, Integer> upgradeMap = new HashMap<>();
+
+		PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+
+		PersistentDataContainer upgradeContainer = container.get(PluginKeys.UPGRADE_COMPOUND.getKey(),
+				PersistentDataType.TAG_CONTAINER);
+
+		if (upgradeContainer == null)
+			return upgradeMap;
+
+		for (NamespacedKey upgradeKey : upgradeContainer.getKeys()) {
+			int level = upgradeContainer.getOrDefault(upgradeKey, PersistentDataType.INTEGER, 1);
+			getUpgrade(upgradeKey.getKey()).ifPresent(upgrade -> upgradeMap.put((CustomUpgrade) upgrade, level));
+		}
+
+		return upgradeMap;
 	}
 
 	public Optional<Upgrade> getRandomUpgrade(ToolType type) {

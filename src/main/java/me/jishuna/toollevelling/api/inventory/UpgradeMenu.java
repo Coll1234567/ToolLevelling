@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import me.jishuna.commonlib.CustomInventory;
 import me.jishuna.commonlib.ItemBuilder;
+import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.ToolLevelling;
 import me.jishuna.toollevelling.api.tools.ToolType;
 import me.jishuna.toollevelling.api.upgrades.Upgrade;
@@ -52,7 +54,8 @@ public class UpgradeMenu extends CustomInventory {
 				int slot = entry.getKey();
 				Upgrade upgrade = entry.getValue();
 
-				ItemStack upgradeItem = new ItemBuilder(Material.BOOK).withName(upgrade.getName()).build();
+				ItemStack upgradeItem = new ItemBuilder(Material.BOOK).withName(upgrade.getName())
+						.withLore(upgrade.getDescription()).build();
 
 				addButton(slot, upgradeItem, this::onUpgradeClick);
 			}
@@ -69,7 +72,20 @@ public class UpgradeMenu extends CustomInventory {
 					Upgrade upgrade = upgradeOptional.get();
 					this.upgradeCache.computeIfAbsent(item.getType(), key -> new HashMap<>()).put(i, upgrade);
 
-					ItemStack upgradeItem = new ItemBuilder(Material.BOOK).withName(upgrade.getName()).build();
+					ItemBuilder builder = new ItemBuilder(Material.BOOK).withName(upgrade.getName())
+							.withLore(upgrade.getDescription());
+
+					if (!upgrade.getConflicts().isEmpty()) {
+						MessageConfig config = this.inventory.getPlugin().getMessageConfig();
+						builder.addLore("", config.getString("upgrades.conflicts-with"));
+					}
+
+					for (String conflictKey : upgrade.getConflicts()) {
+						this.inventory.getPlugin().getUpgradeManager().getUpgrade(conflictKey).ifPresent(
+								conflictUpgrade -> builder.addLore(ChatColor.GRAY + " - " + conflictUpgrade.getName()));
+					}
+
+					ItemStack upgradeItem = builder.build();
 
 					addButton(i, upgradeItem, this::onUpgradeClick);
 				} else {
@@ -81,7 +97,9 @@ public class UpgradeMenu extends CustomInventory {
 		}
 
 		if (this.inventory.getPoints() > 1) {
-			ItemStack upgradeItem = new ItemBuilder(Material.BARREL).withName("Refresh").build();
+			MessageConfig config = this.inventory.getPlugin().getMessageConfig();
+			ItemStack upgradeItem = new ItemBuilder(Material.BARREL).withName(config.getString("refresh-item.name"))
+					.withLore(config.getStringList("refresh-item.lore")).build();
 
 			addButton(22, upgradeItem, this::onRefreshClick);
 		} else {

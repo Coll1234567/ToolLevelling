@@ -3,8 +3,10 @@ package me.jishuna.toollevelling.packets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.GameMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -16,9 +18,12 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
+import me.jishuna.commonlib.MessageConfig;
+import me.jishuna.commonlib.StringUtils;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
 import me.jishuna.toollevelling.api.tools.ToolType;
+import me.jishuna.toollevelling.api.upgrades.Upgrade;
 import net.md_5.bungee.api.ChatColor;
 
 public class PacketAdapterSetSlot extends PacketAdapter {
@@ -32,16 +37,19 @@ public class PacketAdapterSetSlot extends PacketAdapter {
 		this.plugin = plugin;
 	}
 
-	public void cacheLore(ConfigurationSection section) {
+	public void cacheLore(MessageConfig config) {
 		this.loreCache.clear();
 
-		for (String line : section.getStringList("item-display")) {
+		for (String line : config.getStringList("item-display")) {
 			this.loreCache.add(ChatColor.translateAlternateColorCodes('&', line));
 		}
 	}
 
 	@Override
 	public void onPacketSending(PacketEvent event) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
+			return;
+
 		PacketContainer packet = event.getPacket();
 		ItemStack item = packet.getItemModifier().read(0).clone();
 
@@ -65,19 +73,37 @@ public class PacketAdapterSetSlot extends PacketAdapter {
 		if (experience == 0 && level == 0)
 			return;
 
+		PersistentDataContainer upgradeContainer = container.get(PluginKeys.UPGRADE_COMPOUND.getKey(),
+				PersistentDataType.TAG_CONTAINER);
+
+		if (upgradeContainer != null) {
+			
+			for (NamespacedKey upgradeKey : upgradeContainer.getKeys()) {
+				Optional<Upgrade> upgradeOptional = this.plugin.getUpgradeManager().getUpgrade(upgradeKey.getKey());
+
+				if (!upgradeOptional.isPresent())
+					continue;
+
+				Upgrade upgrade = upgradeOptional.get();
+				String line = upgrade.getName() + " " + StringUtils
+						.toRomanNumeral(upgradeContainer.getOrDefault(upgradeKey, PersistentDataType.INTEGER, 1));
+
+				addLore(line, lore, hasLore);
+			}
+			addLore(" ", lore, hasLore);
+		}
+
 		for (int i = 0; i < this.loreCache.size(); i++) {
 			String line = this.loreCache.get(i);
+
+			// TODO Ugly, replace it
 			line = line.replace("%level%", Integer.toString(level));
 			line = line.replace("%points%", Integer.toString(points));
 			line = line.replace("%experience%", decimalFormat.format(experience));
 			line = line.replace("%nextlevel%", decimalFormat.format(nextLevel));
 			line = line.replace("%percentage%", decimalFormat.format((experience / nextLevel) * 100));
 
-			if (hasLore) {
-				lore.set(i, line);
-			} else {
-				lore.add(line);
-			}
+			addLore(line, lore, hasLore);
 		}
 
 		meta.setLore(lore);
@@ -85,6 +111,14 @@ public class PacketAdapterSetSlot extends PacketAdapter {
 
 		packet.getItemModifier().write(0, item);
 		event.setPacket(packet);
+	}
+
+	private void addLore(String line, List<String> lore, boolean hasLore) {
+		if (hasLore) {
+			lore.add(0, line);
+		} else {
+			lore.add(line);
+		}
 	}
 
 }
