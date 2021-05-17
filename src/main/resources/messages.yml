@@ -1,0 +1,4 @@
+item-display:
+  - '&6&lLevel: &a%level%'
+  - '&6&lExperience: &a%experience%&6/&a%nextlevel% &6(&a%percentage%%&6)'
+  - '&6&lUpgrade Points: &a%points%'

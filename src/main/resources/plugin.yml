@@ -1,0 +1,6 @@
+name: ToolLevelling
+version: @version@
+main: me.jishuna.toollevelling.ToolLevelling
+authors: [Jishuna]
+api-version: 1.16
+depend: [ProtocolLib]

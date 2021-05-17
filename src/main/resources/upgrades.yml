@@ -1,0 +1,323 @@
+bane_of_arthropods:
+  enabled: true
+  name: '&7Bane of Arthropods'
+  description: none
+  max-level: 7
+  weight: 100
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+  conflicting-upgrades:
+  - 'sharpness'
+  - 'smite'
+blast_protection:
+  enabled: true
+  name: blast_protection
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+depth_strider:
+  enabled: true
+  name: depth_strider
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+efficiency:
+  enabled: true
+  name: '&7Efficiency'
+  description: none
+  max-level: 7
+  weight: 100
+  tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+feather_falling:
+  enabled: true
+  name: feather_falling
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+fire_aspect:
+  enabled: true
+  name: '&7Fire Aspect'
+  description: none
+  max-level: 4
+  weight: 100
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+fire_protection:
+  enabled: true
+  name: fire_protection
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+flame:
+  enabled: true
+  name: flame
+  description: none
+  max-level: 3
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+fortune:
+  enabled: true
+  name: '&7Fortune'
+  description: none
+  max-level: 4
+  weight: 70
+  tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+frost_walker:
+  enabled: true
+  name: frost_walker
+  description: none
+  max-level: 4
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+impaling:
+  enabled: true
+  name: impaling
+  description: none
+  max-level: 7
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+infinity:
+  enabled: true
+  name: infinity
+  description: none
+  max-level: 3
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+knockback:
+  enabled: true
+  name: '&7Knockback'
+  description: none
+  max-level: 3
+  weight: 100
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+looting:
+  enabled: true
+  name: '&7Looting'
+  description: none
+  max-level: 4
+  weight: 50
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+loyalty:
+  enabled: true
+  name: loyalty
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+luck_of_the_sea:
+  enabled: true
+  name: luck_of_the_sea
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+lure:
+  enabled: true
+  name: lure
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+multishot:
+  enabled: true
+  name: multishot
+  description: none
+  max-level: 3
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+piercing:
+  enabled: true
+  name: piercing
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+power:
+  enabled: true
+  name: power
+  description: none
+  max-level: 7
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+projectile_protection:
+  enabled: true
+  name: projectile_protection
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+protection:
+  enabled: true
+  name: protection
+  description: none
+  max-level: 6
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+punch:
+  enabled: true
+  name: punch
+  description: none
+  max-level: 4
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+quick_charge:
+  enabled: true
+  name: quick_charge
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+respiration:
+  enabled: true
+  name: respiration
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+riptide:
+  enabled: true
+  name: riptide
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+sharpness:
+  enabled: true
+  name: '&7Sharpness'
+  description: none
+  max-level: 7
+  weight: 80
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+  conflicting-upgrades:
+  - 'bane_of_arthropods'
+  - 'smite'
+smite:
+  enabled: true
+  name: '&7Smite'
+  description: none
+  max-level: 7
+  weight: 100
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+  conflicting-upgrades:
+  - 'sharpness'
+  - 'bane_of_arthropods'
+soul_speed:
+  enabled: true
+  name: soul_speed
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+sweeping:
+  enabled: true
+  name: '&7Sweeping Edge'
+  description: none
+  max-level: 5
+  weight: 50
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+thorns:
+  enabled: true
+  name: thorns
+  description: none
+  max-level: 5
+  weight: 100
+  tool-types:
+  - A
+  - B
+  - C
+unbreaking:
+  enabled: true
+  name: '&7Unbreaking'
+  description: none
+  max-level: 5
+  weight: 80
+  tool-types:
+  - 'SWORD'
+  - 'AXE'
+  - 'PICKAXE'
+  - 'SHOVEL'
