@@ -1,0 +1,13 @@
+enabled: true
+name: '&7Auto Smelt'
+description: '&3Automatically smelts any drops that can be processed in a furnace.'
+max-level: 1
+weight: 50
+tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+conflicting-upgrades:
+  - 'fortune'
+blacklisted-materials:
+  - 'STONE'

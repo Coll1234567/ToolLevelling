@@ -41,7 +41,7 @@ public class UpgradeMenu extends CustomInventory {
 	public void show(HumanEntity player) {
 		this.inventory.getPlugin().getInventoryManager().openGui(player, this);
 	}
-
+	
 	public void refreshInventory() {
 		ItemStack item = this.inventory.getItem();
 
@@ -49,7 +49,7 @@ public class UpgradeMenu extends CustomInventory {
 	}
 
 	private void populateOptions(Map<Integer, Upgrade> slotMap) {
-		if (slotMap != null) {
+		if (slotMap != null && !slotMap.isEmpty()) {
 			for (Entry<Integer, Upgrade> entry : slotMap.entrySet()) {
 				int slot = entry.getKey();
 				Upgrade upgrade = entry.getValue();
@@ -92,6 +92,7 @@ public class UpgradeMenu extends CustomInventory {
 					// TODO handle this better
 					removeButton(i);
 					setItem(i, this.inventory.getFiller());
+					this.upgradeCache.computeIfAbsent(item.getType(), key -> new HashMap<>()).remove(i);
 				}
 			}
 		}
@@ -120,12 +121,13 @@ public class UpgradeMenu extends CustomInventory {
 			Material material = this.inventory.getItem().getType();
 			Upgrade upgrade = this.upgradeCache.get(material).get(event.getRawSlot());
 
-			if (upgrade != null) {
+			if (upgrade != null && upgrade.getLevel(this.inventory.getItem()) < upgrade.getMaxLevel()) {
 				upgrade.onLevelup(this.inventory.getItem());
+				this.inventory.removePoint();
 			}
 
-			populateOptions(null);
 			this.inventory.onUpgradeComplete(event.getWhoClicked());
+			populateOptions(null);
 		}
 	}
 }

@@ -1,0 +1,10 @@
+enabled: true
+name: '&7Magnetic'
+description: '&3Teleports items dropped by blocks to you.'
+max-level: 1
+weight: 50
+pickup-delay: 0
+tool-types:
+  - 'PICKAXE'
+  - 'SHOVEL'
+  - 'AXE'

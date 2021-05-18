@@ -51,7 +51,6 @@ public class ToolInventory extends CustomInventory {
 	}
 
 	public void onUpgradeComplete(HumanEntity player) {
-		removePoint();
 		refreshInventory();
 
 		show(player);

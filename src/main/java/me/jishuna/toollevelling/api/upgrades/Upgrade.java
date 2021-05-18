@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,30 +15,31 @@ import net.md_5.bungee.api.ChatColor;
 
 public abstract class Upgrade {
 	private final String key;
-	private final boolean enabled;
-	private final String name;
-	private final int maxLevel;
+	private boolean enabled = false;
+	private String name;
+	private int maxLevel;
 	private final Set<ToolType> toolTypes = new HashSet<>();
 	private final Set<String> conflicts = new HashSet<>();
 	private List<String> description = new ArrayList<>();
-	private final int weight;
+	private int weight;
 
 	public Upgrade(String key, YamlConfiguration upgradeConfig) {
-		this(key, upgradeConfig.getConfigurationSection(key));
-	}
-
-	public Upgrade(String key, ConfigurationSection upgradeSection) {
 		this.key = key;
 
-		this.weight = upgradeSection.getInt("weight", 100);
-		this.maxLevel = upgradeSection.getInt("max-level", 5);
-		this.enabled = upgradeSection.getBoolean("enabled", true);
+		if (upgradeConfig != null)
+			loadData(upgradeConfig);
+	}
 
-		this.name = ChatColor.translateAlternateColorCodes('&', upgradeSection.getString("name", ""));
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		this.weight = upgradeConfig.getInt("weight", 100);
+		this.maxLevel = upgradeConfig.getInt("max-level", 5);
+		this.enabled = upgradeConfig.getBoolean("enabled", true);
 
-		this.conflicts.addAll(upgradeSection.getStringList("conflicting-upgrades"));
+		this.name = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("name", ""));
 
-		for (String typeKey : upgradeSection.getStringList("tool-types")) {
+		this.conflicts.addAll(upgradeConfig.getStringList("conflicting-upgrades"));
+
+		for (String typeKey : upgradeConfig.getStringList("tool-types")) {
 			typeKey = typeKey.toUpperCase();
 
 			if (!PluginConstants.TOOL_TYPE_NAMES.contains(typeKey))
@@ -48,10 +48,10 @@ public abstract class Upgrade {
 			this.toolTypes.add(ToolType.valueOf(typeKey));
 		}
 
-		String description = ChatColor.translateAlternateColorCodes('&', upgradeSection.getString("description", ""));
+		String description = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("description", ""));
 
-		for (String configKey : upgradeSection.getKeys(false)) {
-			description = description.replace("%" + configKey + "%", upgradeSection.getString(configKey));
+		for (String configKey : upgradeConfig.getKeys(false)) {
+			description = description.replace("%" + configKey + "%", upgradeConfig.getString(configKey));
 		}
 
 		List<String> desc = new ArrayList<>();

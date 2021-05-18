@@ -1,0 +1,17 @@
+enabled: true
+name: '&7Multiply'
+description: '&3Has a %chance-per-level%% chance to double the drops from a block.'
+max-level: 3
+weight: 50
+chance-per-level: 1
+tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+blacklisted-materials:
+  - 'BEACON'
+  - 'DIAMOND_BLOCK'
+  - 'EMERALD_BLOCK'
+  - 'GOLD_BLOCK'
+  - 'IRON_BLOCK'
+  - 'NETHERITE_BLOCK'

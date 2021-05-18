@@ -1,0 +1,9 @@
+enabled: true
+name: '&7Efficiency'
+description: '&3Increases tool mining speed.'
+max-level: 6
+weight: 100
+tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'

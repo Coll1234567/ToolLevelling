@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.jishuna.toollevelling.api.upgrades.CustomUpgrade;
@@ -30,6 +31,20 @@ public class BlockListeners implements Listener {
 
 		for (Entry<CustomUpgrade, Integer> entries : this.upgradeManager.getCustomUpgrades(item).entrySet()) {
 			entries.getKey().getEventHandlers(BlockBreakEvent.class)
+					.forEach(consumer -> consumer.consume(event, new UpgradeData(player, entries.getValue())));
+		}
+	}
+
+	@EventHandler
+	public void onBlockDropItems(BlockDropItemEvent event) {
+		Player player = event.getPlayer();
+		ItemStack item = player.getEquipment().getItemInMainHand();
+
+		if (item == null || item.getType().isAir())
+			return;
+
+		for (Entry<CustomUpgrade, Integer> entries : this.upgradeManager.getCustomUpgrades(item).entrySet()) {
+			entries.getKey().getEventHandlers(BlockDropItemEvent.class)
 					.forEach(consumer -> consumer.consume(event, new UpgradeData(player, entries.getValue())));
 		}
 

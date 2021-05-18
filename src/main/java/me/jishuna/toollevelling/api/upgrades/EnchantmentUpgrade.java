@@ -1,10 +1,8 @@
-package me.jishuna.toollevelling.upgrades;
+package me.jishuna.toollevelling.api.upgrades;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-
-import me.jishuna.toollevelling.api.upgrades.Upgrade;
 
 public class EnchantmentUpgrade extends Upgrade {
 	private final Enchantment enchantment;

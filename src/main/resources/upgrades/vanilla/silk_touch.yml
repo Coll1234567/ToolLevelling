@@ -1,0 +1,12 @@
+enabled: true
+name: '&7Silk Touch'
+description: '&3Allows you to pick up certain blocks directly, such as grass and stone.'
+max-level: 1
+weight: 50
+tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+conflicting-upgrades:
+  - 'fortune'
+  - 'auto_smelt'

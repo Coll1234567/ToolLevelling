@@ -1,11 +1,12 @@
 package me.jishuna.toollevelling.api.upgrades;
 
+import java.io.File;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -17,29 +18,23 @@ import org.bukkit.plugin.Plugin;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import me.jishuna.commonlib.FileUtils;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.api.event.EventWrapper;
 
 public abstract class CustomUpgrade extends Upgrade {
 
 	private final Random random = new Random();
-	private final double chancePerLevel;
 	private final Plugin plugin;
 	private final NamespacedKey upgradeKey;
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 
 	public CustomUpgrade(Plugin owner, String key, YamlConfiguration upgradeConfig) {
-		this(owner, key, upgradeConfig.getConfigurationSection(key));
-	}
-
-	public CustomUpgrade(Plugin owner, String key, ConfigurationSection upgradeSection) {
-		super(key, upgradeSection);
+		super(key, upgradeConfig);
 
 		this.plugin = owner;
 		this.upgradeKey = new NamespacedKey(owner, key);
-
-		this.chancePerLevel = upgradeSection.getDouble("chance-per-level", 10);
 	}
 
 	@Override
@@ -92,12 +87,17 @@ public abstract class CustomUpgrade extends Upgrade {
 		return upgradeKey;
 	}
 
-	public double getChancePerLevel() {
-		return chancePerLevel;
-	}
-
 	public Random getRandom() {
 		return random;
+	}
+
+	public static YamlConfiguration loadConfig(Plugin owner, String key) {
+		Optional<File> optional = FileUtils.copyResource(owner, "upgrades/custom/" + key + ".yml");
+
+		if (optional.isPresent()) {
+			return YamlConfiguration.loadConfiguration(optional.get());
+		}
+		return null;
 	}
 
 }

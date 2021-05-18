@@ -15,18 +15,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import me.jishuna.commonlib.FileUtils;
 import me.jishuna.commonlib.WeightedRandom;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
 import me.jishuna.toollevelling.api.event.UpgradeSetupEvent;
 import me.jishuna.toollevelling.api.tools.ToolType;
-import me.jishuna.toollevelling.upgrades.EnchantmentUpgrade;
+import me.jishuna.toollevelling.upgrades.MagnetUpgrade;
+import me.jishuna.toollevelling.upgrades.MultiplyUpgrade;
 import me.jishuna.toollevelling.upgrades.ScavengerUpgrade;
+import me.jishuna.toollevelling.upgrades.SmeltingUpgrade;
 
 public class UpgradeManager {
 	private final ToolLevelling plugin;
 
-	private final EnumMap<ToolType, WeightedRandom<Upgrade>> upgradeMap = new EnumMap<>(ToolType.class);
+	private final Map<ToolType, WeightedRandom<Upgrade>> upgradeMap = new EnumMap<>(ToolType.class);
 	private final Map<String, Upgrade> upgrades = new HashMap<>();
 
 	public UpgradeManager(ToolLevelling plugin) {
@@ -56,15 +59,20 @@ public class UpgradeManager {
 	private List<Upgrade> getDefaultUpgrades() {
 		List<Upgrade> defaultUpgrades = new ArrayList<>();
 
-		YamlConfiguration upgradeConfig = this.plugin.getUpgradeConfig();
-
 		for (Enchantment enchant : Enchantment.values()) {
-			if (upgradeConfig.isConfigurationSection(enchant.getKey().getKey())) {
-				defaultUpgrades.add(new EnchantmentUpgrade(enchant, upgradeConfig));
-			}
+
+			FileUtils.copyResource(this.plugin, "upgrades/vanilla/" + enchant.getKey().getKey().toLowerCase() + ".yml")
+					.ifPresent(file -> {
+
+						YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+						defaultUpgrades.add(new EnchantmentUpgrade(enchant, config));
+					});
 		}
 
-		defaultUpgrades.add(new ScavengerUpgrade(this.plugin, upgradeConfig));
+		defaultUpgrades.add(new ScavengerUpgrade(this.plugin));
+		defaultUpgrades.add(new SmeltingUpgrade(this.plugin));
+		defaultUpgrades.add(new MagnetUpgrade(this.plugin));
+		defaultUpgrades.add(new MultiplyUpgrade(this.plugin));
 
 		return defaultUpgrades;
 	}

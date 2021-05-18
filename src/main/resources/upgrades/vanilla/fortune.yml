@@ -1,0 +1,11 @@
+enabled: true
+name: '&7Fortune'
+description: '&3Increases the amount of items dropped from various blocks, such as ore.'
+max-level: 4
+weight: 70
+tool-types:
+  - 'PICKAXE'
+  - 'AXE'
+  - 'SHOVEL'
+conflicting-upgrades:
+  - 'silk_touch'

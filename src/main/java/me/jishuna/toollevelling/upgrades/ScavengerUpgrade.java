@@ -12,15 +12,25 @@ import me.jishuna.toollevelling.api.upgrades.CustomUpgrade;
 import me.jishuna.toollevelling.api.upgrades.UpgradeData;
 
 public class ScavengerUpgrade extends CustomUpgrade {
-	private final WeightedRandom<Material> dropRandom = new WeightedRandom<>();
+	private static final String KEY = "scavenger";
 
-	public ScavengerUpgrade(Plugin owner, YamlConfiguration upgradeConfig) {
-		super(owner, "scavenger", upgradeConfig);
+	private final WeightedRandom<Material> dropRandom = new WeightedRandom<>();
+	private double chancePerLevel;
+
+	public ScavengerUpgrade(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		this.dropRandom.add(70, Material.IRON_NUGGET);
 		this.dropRandom.add(30, Material.GOLD_NUGGET);
 
 		addEventHandler(BlockBreakEvent.class, this::onBlockBreak);
+	}
+
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
+		
+		this.chancePerLevel = upgradeConfig.getDouble("chance-per-level", 10);
 	}
 
 	private void onBlockBreak(BlockBreakEvent event, UpgradeData data) {
@@ -32,7 +42,7 @@ public class ScavengerUpgrade extends CustomUpgrade {
 		int level = data.getLevel();
 		double chance = getRandom().nextDouble() * 100;
 
-		if (chance > getChancePerLevel() * level)
+		if (chance > this.chancePerLevel * level)
 			return;
 
 		ItemStack item = new ItemStack(dropRandom.poll(), getRandom().nextInt(3) + 1);

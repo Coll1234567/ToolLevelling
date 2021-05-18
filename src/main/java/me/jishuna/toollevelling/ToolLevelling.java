@@ -22,7 +22,6 @@ public class ToolLevelling extends JavaPlugin {
 
 	private YamlConfiguration config;
 	private YamlConfiguration experienceConfig;
-	private YamlConfiguration upgradeConfig;
 
 	private MessageConfig messageConfig;
 
@@ -73,10 +72,6 @@ public class ToolLevelling extends JavaPlugin {
 		return messageConfig;
 	}
 
-	public YamlConfiguration getUpgradeConfig() {
-		return upgradeConfig;
-	}
-
 	public ToolTypeManager getToolTypeManager() {
 		return toolTypeManager;
 	}
@@ -106,9 +101,6 @@ public class ToolLevelling extends JavaPlugin {
 		Optional<File> messageOptional = FileUtils.copyResource(this, "messages.yml");
 		messageOptional
 				.ifPresent(file -> this.messageConfig = new MessageConfig(YamlConfiguration.loadConfiguration(file)));
-
-		Optional<File> upgradeOptional = FileUtils.copyResource(this, "upgrades.yml");
-		upgradeOptional.ifPresent(file -> this.upgradeConfig = YamlConfiguration.loadConfiguration(file));
 	}
 
 }

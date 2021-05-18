@@ -1,0 +1,9 @@
+enabled: true
+name: '&7Scavenger'
+description: '&3Each level gives you a %chance-per-level%% chance to find iron or gold nuggets when mining stone.'
+max-level: 5
+weight: 50
+chance-per-level: 2.0
+tool-types:
+  - 'PICKAXE'
+  - 'SHOVEL'
