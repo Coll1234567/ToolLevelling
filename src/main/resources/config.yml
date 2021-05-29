@@ -15,3 +15,5 @@ tool-types:
     - 'GOLDEN_PICKAXE'
     - 'DIAMOND_PICKAXE'
     - 'NETHERITE_PICKAXE'
+  SHEARS:
+    - 'SHEARS'

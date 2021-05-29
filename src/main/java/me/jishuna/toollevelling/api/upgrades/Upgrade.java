@@ -5,10 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import me.jishuna.commonlib.ItemBuilder;
+import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.commonlib.StringUtils;
+import me.jishuna.toollevelling.ToolLevelling;
 import me.jishuna.toollevelling.api.PluginConstants;
 import me.jishuna.toollevelling.api.tools.ToolType;
 import net.md_5.bungee.api.ChatColor;
@@ -92,6 +96,28 @@ public abstract class Upgrade {
 
 	public int getWeight() {
 		return weight;
+	}
+
+	public ItemStack asItem(ToolLevelling plugin, Material material, Integer level) {
+		ItemBuilder builder = new ItemBuilder(material).withName(getName());
+		if (level != null) {
+			builder.addLore(ChatColor.GOLD + "Level: " + ChatColor.GREEN + level, "");
+		}
+		builder.addLore(getDescription());
+		builder.addLore("");
+		builder.addLore(ChatColor.GOLD + "Max Level: " + ChatColor.GREEN + getMaxLevel());
+
+		if (!getConflicts().isEmpty()) {
+			MessageConfig config = plugin.getMessageConfig();
+			builder.addLore("", config.getString("upgrades.conflicts-with"));
+		}
+
+		for (String conflictKey : getConflicts()) {
+			plugin.getUpgradeManager().getUpgrade(conflictKey)
+					.ifPresent(conflictUpgrade -> builder.addLore(ChatColor.GRAY + " - " + conflictUpgrade.getName()));
+		}
+		return builder.build();
+
 	}
 
 	public abstract void onLevelup(ItemStack item);

@@ -21,6 +21,7 @@ import com.google.common.collect.Multimap;
 import me.jishuna.commonlib.FileUtils;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.api.event.EventWrapper;
+import redempt.crunch.functional.EvaluationEnvironment;
 
 public abstract class CustomUpgrade extends Upgrade {
 
@@ -29,6 +30,11 @@ public abstract class CustomUpgrade extends Upgrade {
 	private final NamespacedKey upgradeKey;
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
+	private static final EvaluationEnvironment evalEnvironment = new EvaluationEnvironment();
+	
+	static {
+		evalEnvironment.setVariableNames("level");
+	}
 
 	public CustomUpgrade(Plugin owner, String key, YamlConfiguration upgradeConfig) {
 		super(key, upgradeConfig);
@@ -89,6 +95,10 @@ public abstract class CustomUpgrade extends Upgrade {
 
 	public Random getRandom() {
 		return random;
+	}
+	
+	public static EvaluationEnvironment getEvalenvironment() {
+		return evalEnvironment;
 	}
 
 	public static YamlConfiguration loadConfig(Plugin owner, String key) {

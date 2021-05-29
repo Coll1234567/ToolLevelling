@@ -1,0 +1,11 @@
+enabled: true
+name: '&7Vein Miner'
+description: '&3Allows you to quickly mine veins of connected blocks.'
+max-level: 5
+weight: 50
+max-range: 10
+chance-per-level: 2
+tool-types:
+  - 'PICKAXE'
+  - 'SHOVEL'
+  - 'AXE'

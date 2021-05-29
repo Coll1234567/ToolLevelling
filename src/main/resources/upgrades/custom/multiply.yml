@@ -8,6 +8,7 @@ tool-types:
   - 'PICKAXE'
   - 'AXE'
   - 'SHOVEL'
+  - 'SHEARS'
 blacklisted-materials:
   - 'BEACON'
   - 'DIAMOND_BLOCK'

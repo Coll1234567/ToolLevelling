@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -34,7 +33,10 @@ public class UpgradeMenu extends CustomInventory {
 			setItem(i, this.inventory.getFiller());
 		}
 
-		addButton(18, new ItemBuilder(Material.ARROW).withName("Back").build(),
+		ToolLevelling plugin = inventory.getPlugin();
+		
+		addButton(18, new ItemBuilder(Material.ARROW).withName(plugin.getMessageConfig().getString("back-item.name"))
+				.withLore(plugin.getMessageConfig().getStringList("back-item.lore")).build(),
 				event -> this.inventory.show(event.getWhoClicked()));
 	}
 
@@ -72,20 +74,7 @@ public class UpgradeMenu extends CustomInventory {
 					Upgrade upgrade = upgradeOptional.get();
 					this.upgradeCache.computeIfAbsent(item.getType(), key -> new HashMap<>()).put(i, upgrade);
 
-					ItemBuilder builder = new ItemBuilder(Material.BOOK).withName(upgrade.getName())
-							.withLore(upgrade.getDescription());
-
-					if (!upgrade.getConflicts().isEmpty()) {
-						MessageConfig config = this.inventory.getPlugin().getMessageConfig();
-						builder.addLore("", config.getString("upgrades.conflicts-with"));
-					}
-
-					for (String conflictKey : upgrade.getConflicts()) {
-						this.inventory.getPlugin().getUpgradeManager().getUpgrade(conflictKey).ifPresent(
-								conflictUpgrade -> builder.addLore(ChatColor.GRAY + " - " + conflictUpgrade.getName()));
-					}
-
-					ItemStack upgradeItem = builder.build();
+					ItemStack upgradeItem = upgrade.asItem(plugin, Material.BOOK, null);
 
 					addButton(i, upgradeItem, this::onUpgradeClick);
 				} else {

@@ -3,11 +3,17 @@ item-display:
   - '&6&lExperience: &a%experience%&6/&a%nextlevel% &6(&a%percentage%%&6)'
   - '&6&lUpgrade Points: &a%points%'
   
-upgrade-item:
+purchase-upgrades-item:
   name: '&6&lPurchase Upgrades'
   lore:
     - '&7Click to purchase upgrades'
     - '&7for this item.'
+    
+upgrades-item:
+  name: '&6&lCurrent Upgrades'
+  lore:
+    - '&7View current upgrades for'
+    - '&7this item.'
     
 refresh-item:
   name: '&6&lRefresh Upgrades'
@@ -15,5 +21,14 @@ refresh-item:
     - '&7Click to refresh available upgrades.'
     - '&cCost: 1 Skill Point.'
     
-upgrades:
-  conflicts-with: '&cConflicts with: '
+back-item:
+  name: '&c&lBack'
+  lore:
+    - '&7Return to the previous menu.'
+    
+close-item:
+  name: '&c&lClose'
+  lore:
+    - '&7Close the menu.'
+    
+upgrades.conflicts-with: '&cConflicts with: '

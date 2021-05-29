@@ -1,5 +1,7 @@
 package me.jishuna.toollevelling.api.inventory;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,8 +15,8 @@ import me.jishuna.commonlib.ItemBuilder;
 import me.jishuna.commonlib.MessageConfig;
 import me.jishuna.toollevelling.PluginKeys;
 import me.jishuna.toollevelling.ToolLevelling;
+import me.jishuna.toollevelling.api.upgrades.Upgrade;
 import me.jishuna.toollevelling.api.utils.ItemUpdater;
-import net.md_5.bungee.api.ChatColor;
 
 public class ToolInventory extends CustomInventory {
 	private final ToolLevelling plugin;
@@ -37,7 +39,9 @@ public class ToolInventory extends CustomInventory {
 			setItem(i, this.filler);
 		}
 
-		addButton(18, new ItemBuilder(Material.BARRIER).withName("Close").build(),
+		addButton(18,
+				new ItemBuilder(Material.BARRIER).withName(plugin.getMessageConfig().getString("close-item.name"))
+						.withLore(plugin.getMessageConfig().getStringList("close-item.lore")).build(),
 				event -> event.getWhoClicked().closeInventory());
 	}
 
@@ -57,15 +61,24 @@ public class ToolInventory extends CustomInventory {
 	}
 
 	private void refreshInventory() {
-		setItem(11, new ItemBuilder(Material.DIAMOND)
-				.withName(ChatColor.GOLD + "Points: " + ChatColor.GREEN + this.points).build());
+		Map<Upgrade, Integer> upgradeMap = this.plugin.getUpgradeManager().getAllUpgrades(this.item);
+
+		if (!upgradeMap.isEmpty()) {
+			addButton(11, new ItemBuilder(Material.BOOK).withName(plugin.getMessageConfig().getString("upgrades-item.name"))
+					.withLore(plugin.getMessageConfig().getStringList("upgrades-item.lore")).build(),
+					event -> this.plugin.getInventoryManager().openGui(event.getWhoClicked(),
+							new UpgradesMenu(this, this.plugin.getUpgradeManager().getAllUpgrades(this.item))));
+		} else {
+			removeButton(11);
+			setItem(11, this.filler);
+		}
 
 		setItem(13, this.item.clone());
 
 		if (this.points > 0) {
 			MessageConfig config = this.plugin.getMessageConfig();
-			addButton(15, new ItemBuilder(Material.PAPER).withName(config.getString("upgrade-item.name"))
-					.withLore(config.getStringList("upgrade-item.lore")).build(), this::showUpgradeMenu);
+			addButton(15, new ItemBuilder(Material.PAPER).withName(config.getString("purchase-upgrades-item.name"))
+					.withLore(config.getStringList("purchase-upgrades-item.lore")).build(), this::showUpgradeMenu);
 		} else {
 			removeButton(15);
 			setItem(15, this.filler);

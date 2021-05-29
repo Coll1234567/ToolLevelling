@@ -15,6 +15,7 @@ import me.jishuna.toollevelling.api.tools.ToolTypeManager;
 import me.jishuna.toollevelling.api.upgrades.UpgradeManager;
 import me.jishuna.toollevelling.api.utils.ItemUpdater;
 import me.jishuna.toollevelling.listeners.BlockListeners;
+import me.jishuna.toollevelling.listeners.EntityListeners;
 import me.jishuna.toollevelling.listeners.ExperienceListener;
 import me.jishuna.toollevelling.listeners.ItemMenuListener;
 
@@ -54,6 +55,7 @@ public class ToolLevelling extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(inventoryManager, this);
 
 		Bukkit.getPluginManager().registerEvents(new BlockListeners(this.upgradeManager), this);
+		Bukkit.getPluginManager().registerEvents(new EntityListeners(this.upgradeManager), this);
 	}
 
 	@Override

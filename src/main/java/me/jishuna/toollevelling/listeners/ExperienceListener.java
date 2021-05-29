@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.jishuna.toollevelling.ToolLevelling;
@@ -43,6 +44,17 @@ public class ExperienceListener implements Listener {
 
 		if (item != null && !item.getType().isAir()) {
 			this.plugin.getExperienceManager().increaseExperience(item, event.getBlock().getType());
+			ItemUpdater.updateItem(this.plugin, item, false);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onShear(PlayerShearEntityEvent event) {
+		Player player = event.getPlayer();
+		ItemStack item = player.getEquipment().getItemInMainHand();
+
+		if (item != null && !item.getType().isAir()) {
+			this.plugin.getExperienceManager().increaseExperience(item, event.getEntity().getType());
 			ItemUpdater.updateItem(this.plugin, item, false);
 		}
 	}

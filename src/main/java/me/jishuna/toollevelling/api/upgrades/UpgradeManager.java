@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffectType;
 
 import me.jishuna.commonlib.FileUtils;
 import me.jishuna.commonlib.WeightedRandom;
@@ -25,6 +27,7 @@ import me.jishuna.toollevelling.upgrades.MagnetUpgrade;
 import me.jishuna.toollevelling.upgrades.MultiplyUpgrade;
 import me.jishuna.toollevelling.upgrades.ScavengerUpgrade;
 import me.jishuna.toollevelling.upgrades.SmeltingUpgrade;
+import me.jishuna.toollevelling.upgrades.VeinUpgrade;
 
 public class UpgradeManager {
 	private final ToolLevelling plugin;
@@ -73,12 +76,26 @@ public class UpgradeManager {
 		defaultUpgrades.add(new SmeltingUpgrade(this.plugin));
 		defaultUpgrades.add(new MagnetUpgrade(this.plugin));
 		defaultUpgrades.add(new MultiplyUpgrade(this.plugin));
+		defaultUpgrades.add(new VeinUpgrade(this.plugin));
+		defaultUpgrades.add(new PotionEffectUpgrade(this.plugin, "poison", PotionEffectType.POISON));
+		defaultUpgrades.add(new PotionEffectUpgrade(this.plugin, "wither", PotionEffectType.WITHER));
 
 		return defaultUpgrades;
 	}
 
 	public Optional<Upgrade> getUpgrade(String key) {
 		return Optional.ofNullable(this.upgrades.get(key));
+	}
+
+	public Map<Upgrade, Integer> getAllUpgrades(ItemStack item) {
+		Map<Upgrade, Integer> upgradeMap = new HashMap<>();
+		upgradeMap.putAll(getCustomUpgrades(item));
+
+		for (Entry<Enchantment, Integer> enchant : item.getEnchantments().entrySet()) {
+			getUpgrade(enchant.getKey().getKey().getKey())
+					.ifPresent(upgrade -> upgradeMap.put(upgrade, enchant.getValue()));
+		}
+		return upgradeMap;
 	}
 
 	public Map<CustomUpgrade, Integer> getCustomUpgrades(ItemStack item) {

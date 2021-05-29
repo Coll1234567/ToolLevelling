@@ -1,0 +1,8 @@
+enabled: true
+name: '&7Sharpness'
+description: '&3Increases weapon damage against all enemies.'
+max-level: 6
+weight: 100
+tool-types:
+  - 'SWORD'
+  - 'AXE'

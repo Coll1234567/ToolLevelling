@@ -7,6 +7,7 @@ tool-types:
   - 'PICKAXE'
   - 'AXE'
   - 'SHOVEL'
+  - 'SHEARS'
 conflicting-upgrades:
   - 'fortune'
   - 'auto_smelt'

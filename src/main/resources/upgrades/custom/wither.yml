@@ -1,0 +1,11 @@
+enabled: true
+name: '&7Decay'
+description: '&3Gives you a chance to wither your target for a short time.'
+max-level: 5
+weight: 50
+chance-formula: 'level * 5'
+duration-formula: 'level * 20'
+amplifier: 0
+tool-types:
+  - 'SWORD'
+  - 'AXE'

@@ -12,18 +12,21 @@ repositories {
 	mavenLocal()
 	mavenCentral()
 	maven { url "https://repo.dmulloy2.net/nexus/repository/public/" }
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.16.5-R0.1-SNAPSHOT'
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.6.0";
     compile group: 'me.jishuna.jishunacommonlib', name: 'JishunaCommonLib', version: '1.0.0'
+    compile 'com.github.Redempt:Crunch:master-SNAPSHOT'
 }
 
 
 shadowJar {
     setArchiveName('ToolLevelling-' + this.version + '.jar')                                              
-    relocate 'me.jishuna.commonlib', 'me.jishuna.toollevelling.libs.commonlib'                                             
+    relocate 'me.jishuna.commonlib', 'me.jishuna.toollevelling.libs.commonlib'         
+    relocate 'redempt.crunch', 'me.jishuna.toollevelling.libs.crunch'                                               
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

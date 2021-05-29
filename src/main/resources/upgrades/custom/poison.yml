@@ -1,0 +1,11 @@
+enabled: true
+name: '&7Poison Tip'
+description: '&3Gives you a chance to poison your target for a short time.'
+max-level: 5
+weight: 50
+chance-formula: 'level * 5'
+duration-formula: 'level * 40'
+amplifier: 0
+tool-types:
+  - 'SWORD'
+  - 'AXE'
